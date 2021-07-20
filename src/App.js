@@ -1,8 +1,10 @@
 import React, {useState, useCallback, useRef} from 'react';
 import produce from 'immer';
+import './css/app.css';
+import Header from './header';
 
-const numRows = 50;
-const numCols = 50;
+const numRows = 35;
+const numCols = 35;
 
 const operations = [
   [0, 1],
@@ -65,66 +67,74 @@ function App() {
   }, []);
 
   return (
-    <>
-      <button
-        onClick={() => {
-          setRunning(!running);
-          if(!running){
-            runningRef.current = true;
-            runSimulation();
-          }
-        }}
-      >
-        {running ? 'stop' : 'start'}
-      </button>
+    <div>
+      <Header></Header>
+      <div className="buttons">
+        <button
+          onClick={() => {
+            setRunning(!running);
+            if(!running){
+              runningRef.current = true;
+              runSimulation();
+            }
+          }}
+        >
+          {running ? 'stop' : 'start'}
+        </button>
 
-      <button
-        onClick={() => {
-          setGrid(generateEmptyGrid());
-        }}
-      >
-      clear
-      </button>
+        <button
+          onClick={() => {
+            setGrid(generateEmptyGrid());
+          }}
+        >
+        clear
+        </button>
 
-      <button
-        onClick={() => {
-          const rows = [];
-          for (let i = 0; i < numRows; i++) {
-            rows.push(Array.from(Array(numCols), () => (Math.random() > 0.75 ? 1 : 0)));
-          }
-          setGrid(rows);
-        }}
-      >
-      random
-      </button>
-
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: `repeat(${numCols}, 20px)`
-        }}
-      >
-        {grid.map((rows, i) =>
-          rows.map((col, k) => (
-            <div
-            key={`${i}-${k}`}
-            onClick={() => {
-              const newGrid = produce(grid, gridCopy => {
-                gridCopy[i][k] = grid[i][k] ? 0 : 1;
-              });
-              setGrid(newGrid);
-            }}
-              style={{
-                width: 20,
-                height: 20,
-                backgroundColor: grid[i][k] ? 'pink' : undefined,
-                border: 'solid 1px black'
-              }}
-            />
-          ))
-        )}
+        <button
+          onClick={() => {
+            const rows = [];
+            for (let i = 0; i < numRows; i++) {
+              rows.push(Array.from(Array(numCols), () => (Math.random() > 0.75 ? 1 : 0)));
+            }
+            setGrid(rows);
+          }}
+        >
+        random
+        </button>
       </div>
-    </>
+
+      <div className="game">
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: `repeat(${numCols}, 15px)`,
+            boxShadow: '0px 25px 50px -12px rgba(0, 0, 0, 0.25)'
+          }}
+        >
+          {grid.map((rows, i) =>
+            rows.map((col, k) => (
+              <div
+              key={`${i}-${k}`}
+              onClick={() => {
+                const newGrid = produce(grid, gridCopy => {
+                  gridCopy[i][k] = grid[i][k] ? 0 : 1;
+                });
+                setGrid(newGrid);
+              }}
+                style={{
+                  width: 15,
+                  height: 15,
+                  backgroundColor: grid[i][k] ? '#ec1840' : undefined,
+                  border: 'solid 1px black',
+                  cursor: 'pointer'
+                }}
+              />
+            ))
+          )}
+        </div>
+      </div>
+
+    </div>
   );
 }
 
