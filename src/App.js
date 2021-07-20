@@ -69,6 +69,7 @@ function App() {
   return (
     <div>
       <Header></Header>
+      
       <div className="buttons">
         <button
           onClick={() => {
