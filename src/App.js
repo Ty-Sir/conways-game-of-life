@@ -1,6 +1,6 @@
 import React, {useState, useCallback, useRef} from 'react';
 import produce from 'immer';
-import './css/app.css';
+import './app.css';
 import Header from './header';
 
 const numRows = 35;
